@@ -834,7 +834,6 @@ pipeline {
 
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
-						setAPIMaturity(APIGW_SERVER, apiRef, "Production");
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
 					}
 				}
