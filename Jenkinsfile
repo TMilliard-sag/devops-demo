@@ -43,7 +43,7 @@ def isISRunningInRemoteServer(server, port) {
 
 // deploy API from one API Gateway to another via Promotion
 // Remote gateway is configure via Stage properties.
-def promoteAPI(apigwUrl, stage, apis) {
+def promoteAPI(apigwUrl, stage, apis, maturity) {
 
 	apiString = null;
 
@@ -55,7 +55,7 @@ def promoteAPI(apigwUrl, stage, apis) {
 			apiString = apiString + ",\"${a}\""
 		}
 
-		setAPIMaturity(apigwUrl, a, "UAT")
+		setAPIMaturity(apigwUrl, a, "${maturity}" )
 	}
 
 	apiString = apiString + "]"
@@ -819,7 +819,7 @@ pipeline {
 				script {
 					print("Promoting Tested API's to UAT platform")
 
-					promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE), PROD_API_IDS)
+					promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE), PROD_API_IDS, "UAT")
 				}
 			}
 		}
@@ -835,7 +835,7 @@ pipeline {
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
 						setAPIMaturity(APIGW_SERVER, apiRef, "Production");
-						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS)
+						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
 					}
 				}
 			}
