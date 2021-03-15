@@ -833,7 +833,7 @@ pipeline {
 					print("Publishing API to PROD GW (10.7)")
 
 					PROD_API_IDS.each{apiRef ->
-						println("publi")
+						println("publication of "+apiRef)
 						setAPIMaturity(APIGW_SERVER, apiRef, "Production");
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS)
 					}
