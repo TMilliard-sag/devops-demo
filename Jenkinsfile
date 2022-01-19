@@ -686,9 +686,9 @@ pipeline {
 		GIT_ACCOUNT='TMilliard-sag'
 		GIT_REPO='devops-demo'
 
-		APIGW_SERVER='http://devops-demo_wm-api-gateway_1:5555'
+		APIGW_SERVER='http://test3_wm-api-gateway_1:5555'
 		
-		API_SERVER='http://devops-demo_helloworld_1:5555'
+		API_SERVER='http://test3_helloworld_1:5555'
 
 		APIPORTAL="default"
 		APIPORTAL_COMMUNITY="Public Community"
