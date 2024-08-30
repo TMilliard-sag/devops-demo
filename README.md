@@ -1,6 +1,6 @@
 # devops-demo
 
-A demonstration of Software AG's webMethods API Management and Micro Service runtime, leverage Docker and Jenkins deployment to show case a CI/CD API hybrid deployment from on-premise to cloud.
+A demonstration of webMethods's API Management and Micro Service runtime, leverage Docker and Jenkins deployment to show case a CI/CD API hybrid deployment from on-premise to cloud.
 
 Git clone this repo to your machine, in reality the only file you need locally is the docker compose in order to start up the containers.
 
@@ -11,14 +11,13 @@ Run the docker-compose command to start up the local containers on your machine
 $ docker-compose -f docker-compose.yaml up
 
 This will start up the following containers;
+  - helloworld-service (Simple API based on webMethods Micro Service Runtime)
+ - webMethods micro gateway (webMethods's policity enforcement runtime for micro service side car operation)
+ - webMethods API Gateway 10.15 (simulating a Dev env)
+ - webMethods API Gateway 10.15 (simulating a PROD env)
  - Jenkins
- - mysql
- - helloworld-service (Simple API based on webMethods Micro Service Runtime)
- - webMethods micro gateway (Software AG's policity enforcement runtime for micro service side car operation)
- - webMethods API Gateway 10.5 (Software AG's API Mgmt portal)
- - webMethods API Gateway 10.7 
  
-## API Gateway setup
+## API Gateway "Dev" setup
 
 Create a test app called "TestApp" under the section "Apps", this is the app that will be auto assigned to any deployed API's.
 
@@ -57,7 +56,7 @@ Enter the login and password associated with the API gateway and specify the id 
 
 From the jenkins home page, click "New Item", then enter a name and click "**Multibranch pipeline**".
 Fill out the form as your wish but you will need to add this repository so that the provided Jenkins file will be used.
-Under "**Branch Sources**", click "add source" and select "GitHub". Just paste the url of this repo into "Repository URL", namely "https://github.com/johnpcarter/devops-demo".
+Under "**Branch Sources**", click "add source" and select "GitHub". Just paste the url of this repo into "Repository URL", namely "https://github.com/TMilliard-sag/devops-demo".
 
 No credentials are required as this repository is public.
 
