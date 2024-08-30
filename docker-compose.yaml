@@ -1,0 +1,100 @@
+# 2024-08-27 : obsolete version: '3'
+# 2024-08-27
+#using dockerfiles in ./dockerfilesto to build images (inject license in containers...)
+#adding newman AND command to run the init setup
+#adding existing network to use ( devops-v3 )
+# check if creation of network ?? 
+services:
+  newman: 
+    build:
+        context: ./dockerfiles
+        dockerfile: dockerfile-newman.yaml
+    hostname: newman
+#adding restart for successfull deployment using V2 syntax (V3 does not work)
+    restart: "on-failure"
+    command: 
+        run "InitDevopsDemo.postman_collection.json"  --environment="DevopsDemo.postman_environment.json"
+    depends_on: 
+        - "wm-api-gateway"
+  wm-api-micro:
+    build:
+        context: ./dockerfiles
+        dockerfile: dockerfile-microgw.yaml
+    hostname: wm-api-micro
+    ports: 
+        - "4485:4485"
+    restart: "on-failure"
+    environment: 
+        - mcgw_microgatewayPool_microgatewayPoolName=hello-microservice
+        - mcgw_api_gateway_url=http://wm-api-gateway:5555
+        - mcgw_api_gateway_user=Administrator
+        - mcgw_api_gateway_password=manage
+        - mcgw_downloads_policies=Transaction logging,Basic Security
+        - mcgw_downloads_apis=HelloWorld
+        - mcgw_downloads_applications=TestApp
+        - mcgw_applications_sync=true
+        - mcgw_polling_interval_secs=10
+        - mcgw_faults_default_error_message=API Gateway encountered an error. Error Message $$ERROR_MESSAGE, Request Details Service - $$SERVICE, Operation - $$OPERATION, Invocation Time $$TIME , User - $$USER and Application $$CONSUMER_APPLICATION
+        - mcgw_extended_settings_apiKeyHeader=x-Gateway-APIKey
+        - api_server_url=http://helloworld:5555
+        - api_server_user=Administrator
+        - api_server_password=manage
+    depends_on: 
+        - "wm-api-gateway"  
+  helloworld: 
+    build:
+        context: ./dockerfiles
+        dockerfile: dockerfile-helloworld.yaml
+    hostname: helloworld
+    ports: 
+        - "4444:5555"
+    environment: 
+        - api_gateway_url=http://wm-api-gateway:5555
+        - api_gateway_user=Administrator
+        - api_gateway_password=manage
+        - api_gateway_default_maturity=test
+        - api_gateway_default_app=TestApp
+        - api_gateway_allow_update=false
+    depends_on: 
+        - "wm-api-gateway-prod"
+        - "wm-api-gateway"  
+  wm-api-gateway-prod: 
+    build:
+        context: ./dockerfiles
+        dockerfile: dockerfile-apigw.yaml
+    hostname: wm-api-gateway-prod
+    ports: 
+        - "3333:5555"
+        - "9092:9072"
+    environment:
+        - apigw_wrapper_java_initmemory=1024
+        - apigw_wrapper_java_maxmemory=1024
+# limiting ressources :
+    deploy:
+        resources:
+            limits:
+                memory: 3.7G
+  wm-api-gateway: 
+    build:
+        context: ./dockerfiles
+        dockerfile: dockerfile-apigw.yaml
+    hostname: wm-api-gateway
+    ports: 
+        - "7777:5555"
+        - "9072:9072"
+        - "9240:9240"
+    environment:
+        - apigw_wrapper_java_initmemory=1024
+        - apigw_wrapper_java_maxmemory=1024
+# limiting ressources :
+    deploy:
+        resources:
+            limits:
+                memory: 3.7G
+# Setting to reuse existing network
+networks:
+  default:
+    name: devops-v3
+    external: true
+# 2024-08-27 : obsolete    external:
+# 2024-08-27 : obsolete      name: devops-v3
