@@ -1,9 +1,7 @@
 # 2024-08-27 : obsolete version: '3'
-# 2024-08-27
 #using dockerfiles in ./dockerfilesto to build images (inject license in containers...)
 #adding newman AND command to run the init setup
 #adding existing network to use ( devops-v3 )
-# check if creation of network ?? 
 services:
   newman: 
     build:
@@ -95,6 +93,5 @@ services:
 networks:
   default:
     name: devops-v3
-    external: true
 # 2024-08-27 : obsolete    external:
-# 2024-08-27 : obsolete      name: devops-v3
+    external: true
