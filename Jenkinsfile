@@ -835,10 +835,13 @@ pipeline {
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
+						println("Promotion done for "+apiRef)
 
 						if (API_STAGE != "") {
-								publishAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE), apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
+							println("Publication for "+apiRef + " in stage "+ API_STAGE )
+							publishAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE), apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
 						} else {
+							println("Publication for "+apiRef + " with empty stage " )
 							publishAPI(APIGW_SERVER, null, apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
 						}					
 					
