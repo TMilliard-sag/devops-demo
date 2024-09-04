@@ -116,7 +116,7 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 
 	portalId = getPortalId(url, auth,  portalName)
 		//
-		println("DEBUG Publication for "+portalName +" , got portalId" )
+		println("DEBUG Publication for "+portalName +" , got portalId : " + portalId )
 	communityId = getPortalCommunityId(url, auth, portalId, communityName)
 		//
 		println("DEBUG Publication for "+portalName +" , got communityId" )
@@ -699,7 +699,7 @@ pipeline {
 		
 		API_SERVER='http://helloworld:5555'
 
-		APIPORTAL="presalesemeatest"
+		APIPORTAL="DevOpsDemoPROD"
 		APIPORTAL_COMMUNITY="Public Community"
 		API_TEST_APP="TestApp"
 		API_STAGE="UAT"
