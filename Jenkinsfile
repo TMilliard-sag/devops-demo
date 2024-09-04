@@ -62,7 +62,7 @@ def promoteAPI(apigwUrl, stage, apis, maturity) {
 
 	def body = """ {
 		"description": "Tested APIS ${apis}",
-		"name": "CDI-${BUILD_NUMBER}",
+		"name": "FR_TM_CDI-${BUILD_NUMBER}",
 		"destinationStages": ["${stage}"],
 		"promotedAssets": {
     		"api": ${apiString}
