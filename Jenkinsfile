@@ -828,14 +828,19 @@ pipeline {
 				expression { PROD_API_IDS.size() > 0 && API_STAGE_PROD != ""}
 			}
 			steps {
-				input("UAT Promotion Completed, Ready to deploy in Prod?")
+				input("UAT Promotion Completed, Ready to deploy in Prod and publish ?")
 				script {
-					print("Publishing API to PROD GW ")
+					print("Publishing API to PROD GW and Dev Portal")
 
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
-					}
+						if (API_STAGE != "") {
+							publishAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE), apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
+						} else {
+							publishAPI(APIGW_SERVER, null, apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
+						}
+					}						
 				}
 			}
 		}
