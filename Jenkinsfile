@@ -111,9 +111,15 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 		url = apigwUrl;
 		auth = "wm-apigateway"
 	}
+		//
+		println("DEBUG Publication for "+portalName +" stages details are URL" + url + " and auth " + auth )
 
 	portalId = getPortalId(url, auth,  portalName)
+		//
+		println("DEBUG Publication for "+portalName +" , got portalId" )
 	communityId = getPortalCommunityId(url, auth, portalId, communityName)
+		//
+		println("DEBUG Publication for "+portalName +" , got communityId" )
 
 	def body = """ {
 		"portalGatewayId": "${portalId}",
