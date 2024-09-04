@@ -835,11 +835,6 @@ pipeline {
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
-						if (API_STAGE != "") {
-							publishAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
-						} else {
-							publishAPI(APIGW_SERVER, null, apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
-						}
 					}						
 				}
 			}
