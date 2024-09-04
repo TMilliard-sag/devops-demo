@@ -97,7 +97,7 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 		jsn = readJSON file: '', text: "${response.content}"
 
 		//
-		println("DEBUG Publication for "+apiRef +" stages details are :" + jsn )
+		println("DEBUG Publication for "+portalName +" stages details are :" + jsn )
 
 		//def url = jsn.stages[0].url;
 		//def name = jsn.stages[0].name;
