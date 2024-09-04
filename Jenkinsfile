@@ -830,7 +830,7 @@ pipeline {
 			steps {
 				input("UAT Promotion Completed, Ready to deploy in Prod?")
 				script {
-					print("Publishing API to PROD GW (10.7)")
+					print("Publishing API to PROD GW ")
 
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
