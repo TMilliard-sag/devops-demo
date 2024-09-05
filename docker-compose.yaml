@@ -73,6 +73,12 @@ services:
         - "7777:5555"
         - "9072:9072"
         - "9240:9240"
+  jenkins:
+    image: tmilliard/wm-devops-demo:jenkins-3
+    hostname: jenkins
+    ports: 
+        - "8080:8080"
+        - "50000:50000"      
 # Setting to reuse existing network
 networks:
   default:
