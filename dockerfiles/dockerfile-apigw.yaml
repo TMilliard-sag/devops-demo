@@ -1,0 +1,4 @@
+FROM sagcr.azurecr.io/apigateway:10.15
+LABEL MAINTAINER="Thierry Milliard thierry.milliard@softwareag.com"
+
+COPY licenses/API.xml /opt/softwareag/IntegrationServer/instances/default/config/licenseKey.xml

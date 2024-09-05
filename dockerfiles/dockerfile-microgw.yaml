@@ -1,0 +1,4 @@
+FROM sagcr.azurecr.io/microgateway:10.15
+LABEL MAINTAINER="Thierry Milliard thierry.milliard@softwareag.com"
+
+COPY licenses/microgatewaylic.xml /opt/softwareag/Microgateway/config/license.xml

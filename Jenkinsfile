@@ -62,7 +62,7 @@ def promoteAPI(apigwUrl, stage, apis, maturity) {
 
 	def body = """ {
 		"description": "Tested APIS ${apis}",
-		"name": "CDI-${BUILD_NUMBER}",
+		"name": "FR_TM_CDI-${BUILD_NUMBER}",
 		"destinationStages": ["${stage}"],
 		"promotedAssets": {
     		"api": ${apiString}
@@ -96,6 +96,9 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 
 		jsn = readJSON file: '', text: "${response.content}"
 
+		//
+		println("DEBUG Publication for "+portalName +" stages details are :" + jsn )
+
 		//def url = jsn.stages[0].url;
 		//def name = jsn.stages[0].name;
 
@@ -108,9 +111,15 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 		url = apigwUrl;
 		auth = "wm-apigateway"
 	}
+		//
+		println("DEBUG Publication for "+portalName +" stages details are URL" + url + " and auth " + auth )
 
 	portalId = getPortalId(url, auth,  portalName)
+		//
+		println("DEBUG Publication for "+portalName +" , got portalId : " + portalId )
 	communityId = getPortalCommunityId(url, auth, portalId, communityName)
+		//
+		println("DEBUG Publication for "+portalName +" , got communityId" )
 
 	def body = """ {
 		"portalGatewayId": "${portalId}",
@@ -690,7 +699,7 @@ pipeline {
 		
 		API_SERVER='http://helloworld:5555'
 
-		APIPORTAL="default"
+		APIPORTAL="DevOpsDemoPROD"
 		APIPORTAL_COMMUNITY="Public Community"
 		API_TEST_APP="TestApp"
 		API_STAGE="UAT"
@@ -828,14 +837,25 @@ pipeline {
 				expression { PROD_API_IDS.size() > 0 && API_STAGE_PROD != ""}
 			}
 			steps {
-				input("UAT Promotion Completed, Ready to deploy in Prod?")
+				input("UAT Promotion Completed, Ready to deploy in Prod and publish ?")
 				script {
-					print("Publishing API to PROD GW (10.7)")
+					print("Publishing API to PROD GW and Dev Portal")
 
 					PROD_API_IDS.each{apiRef ->
 						println("publication of "+apiRef)
 						promoteAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), PROD_API_IDS, "Production")
-					}
+						println("Promotion done for "+apiRef)
+
+						if (API_STAGE != "") {
+							println("Publication for "+apiRef + " in stage named"+ API_STAGE_PROD )
+							publishAPI(APIGW_SERVER, getStageId(APIGW_SERVER, API_STAGE_PROD), apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
+						} else {
+							println("Publication for "+apiRef + " with empty stage " )
+							publishAPI(APIGW_SERVER, null, apiRef, APIPORTAL, APIPORTAL_COMMUNITY)
+						}					
+					
+					
+					}						
 				}
 			}
 		}

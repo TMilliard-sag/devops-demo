@@ -1,0 +1,3 @@
+FROM postman/newman:latest
+
+COPY newman/* /etc/newman/

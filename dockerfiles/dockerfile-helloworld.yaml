@@ -1,0 +1,3 @@
+FROM tmilliard/wm-devops-demo:helloworld-service-1.2
+
+COPY licenses/MSRlic.xml /opt/softwareag/IntegrationServer/config/licenseKey.xml

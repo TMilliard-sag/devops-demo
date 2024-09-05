@@ -1,5 +1,5 @@
 # 2024-08-27 : obsolete version: '3'
-#using dockerfiles in ./dockerfilesto to build images (inject license in containers...)
+#using dockerfiles in ./dockerfiles to to build images (inject license in containers...)
 #adding newman AND command to run the init setup
 #adding existing network to use ( devops-v3 )
 services:
@@ -8,7 +8,7 @@ services:
         context: ./dockerfiles
         dockerfile: dockerfile-newman.yaml
     hostname: newman
-#adding restart for successfull deployment using V2 syntax (V3 does not work)
+#adding restart for successfull deployment
     restart: "on-failure"
     command: 
         run "InitDevopsDemo.postman_collection.json"  --environment="DevopsDemo.postman_environment.json"
@@ -21,7 +21,7 @@ services:
     hostname: wm-api-micro
     ports: 
         - "4485:4485"
-    restart: "on-failure"
+    restart: "always"
     environment: 
         - mcgw_microgatewayPool_microgatewayPoolName=hello-microservice
         - mcgw_api_gateway_url=http://wm-api-gateway:5555
@@ -64,14 +64,6 @@ services:
     ports: 
         - "3333:5555"
         - "9092:9072"
-    environment:
-        - apigw_wrapper_java_initmemory=1024
-        - apigw_wrapper_java_maxmemory=1024
-# limiting ressources :
-    deploy:
-        resources:
-            limits:
-                memory: 3.7G
   wm-api-gateway: 
     build:
         context: ./dockerfiles
@@ -81,14 +73,6 @@ services:
         - "7777:5555"
         - "9072:9072"
         - "9240:9240"
-    environment:
-        - apigw_wrapper_java_initmemory=1024
-        - apigw_wrapper_java_maxmemory=1024
-# limiting ressources :
-    deploy:
-        resources:
-            limits:
-                memory: 3.7G
 # Setting to reuse existing network
 networks:
   default:

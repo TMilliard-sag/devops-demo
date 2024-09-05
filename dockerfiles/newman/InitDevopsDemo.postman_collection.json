@@ -1,0 +1,748 @@
+{
+	"info": {
+		"_postman_id": "2676cd5e-b4e8-4c33-8af7-85e0cfb5e22b",
+		"name": "Init Devops Demo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Alias for current stage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Alias already exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Alias created\", function () {\r",
+							"   pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"simple\",\r\n    \"description\": \"Alias for the native service backend in current (DEV) stage.\",\r\n    \"name\": \"API_HOST\",\r\n    \"value\": \"helloworld:5555\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/alias",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"alias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create UAT stage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Stage UAT already exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Stage UAT created\", function () {\r",
+							"   pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"UAT\",\r\n    \"description\": \"Stage for UAT, from DEV instance, created through APIs\",\r\n    \"url\": \"{{UAT_Url}}\",\r\n    \"username\": \"{{UAT_User}}\",\r\n    \"password\": \"{{UAT_Password}}\",\r\n    \"keystoreAlias\": \"DEFAULT_IS_KEYSTORE\",\r\n    \"keyAlias\": \"ssos\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/stages",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"stages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create PROD stage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Stage PROD already exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Stage PROD created\", function () {\r",
+							"   pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"if ( pm.response.code === 201) {\r",
+							"    // retrieve $.stage.id\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"stageId\", jsonData.stage.id);\r",
+							"    console.log(\"Stage ID : \" + pm.collectionVariables.get(\"stageId\") ) ;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"PROD\",\r\n    \"description\": \"Stage for PROD, created on DEV instance through APIs\",\r\n    \"url\": \"http://wm-api-gateway-prod:5555\",\r\n    \"username\": \"Administrator\",\r\n    \"password\": \"manage\",\r\n    \"keystoreAlias\": \"DEFAULT_IS_KEYSTORE\",\r\n    \"keyAlias\": \"ssos\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/stages",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"stages"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Alias for PROD stage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Alias already exist\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Alias created\", function () {\r",
+							"   pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"simple\",\r\n    \"description\": \"Alias for the native service backend in PROD stage.\",\r\n    \"name\": \"API_HOST\",\r\n    \"value\": \"helloworld:5555\",\r\n    \"stage\": \"{{stageId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/alias",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"alias"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable DEV GlobalLogInvocationPolicy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"GlobalLogInvocationPolicy already enabled\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"GlobalLogInvocationPolicy enabled\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"simple\",\r\n    \"description\": \"Alias for the native service backend in PROD stage.\",\r\n    \"name\": \"API_HOST\",\r\n    \"value\": \"http://helloworld:5555\",\r\n    \"stage\": \"{{stageId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/policies/GlobalLogInvocationPolicy/activate",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"policies",
+						"GlobalLogInvocationPolicy",
+						"activate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Enable PROD GlobalLogInvocationPolicy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"GlobalLogInvocationPolicy already enabled\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"GlobalLogInvocationPolicy enabled\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"type\": \"simple\",\r\n    \"description\": \"Alias for the native service backend in PROD stage.\",\r\n    \"name\": \"API_HOST\",\r\n    \"value\": \"http://helloworld:5555\",\r\n    \"stage\": \"{{stageId}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT_PROD}}{{RestAPIs}}/policies/GlobalLogInvocationPolicy/activate",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT_PROD}}{{RestAPIs}}",
+					"path": [
+						"policies",
+						"GlobalLogInvocationPolicy",
+						"activate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEV Import Global Basic Security Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"console.log(\"Global Policy imported\") ;\r",
+							"/*  Seems no array features in Postman ??? !!\r",
+							"\r",
+							"// retrieve $.ArchiveResult.Policy.id\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"GlobalBasicSecurityId\", jsonData.ArchiveResult.Policy.id);\r",
+							"console.log(\"Global policy Basic SecurityID : \" + pm.collectionVariables.get(\"GlobalBasicSecurityId\") ) ;\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "Basic%20Security.zip"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/archive",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"archive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEV Search ID of Global Basic Security Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// retrieve $.policy.id\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"GlobalBasicSecurityId\", jsonData.policy[0].id);\r",
+							"console.log(\"Global policy Basic SecurityID : \" + pm.collectionVariables.get(\"GlobalBasicSecurityId\") ) ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"types\": [\r\n        \"policy\"\r\n    ],\r\n    \"scope\": [\r\n        {\r\n            \"attributeName\": \"names.value\",\r\n            \"keyword\": \"Basic Security\"\r\n        },\r\n        {\r\n            \"attributeName\": \"policyScope\",\r\n            \"keyword\": \"GLOBAL\"\r\n        }\r\n    ],\r\n    \"responseFields\": [\r\n        \"id\"\r\n    ],\r\n    \"sortByField\": \"names.value\",\r\n    \"sortOrder\": \"ASC\",\r\n    \"condition\": \"and\",\r\n    \"from\": 0,\r\n    \"size\": 10,\r\n    \"teamFilter\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/search",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEV Enable Global Basic Security Policy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Global Basic Security Policy already enabled\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Global Basic Security Policy enabled\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/policies/{{GlobalBasicSecurityId}}/activate",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"policies",
+						"{{GlobalBasicSecurityId}}",
+						"activate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEV Import TestApplication",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"console.log(\"Test Application imported\") ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "TestApp.zip"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT}}{{RestAPIs}}/archive",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT}}{{RestAPIs}}",
+					"path": [
+						"archive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROD Import TestApplication Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"console.log(\"Test Application imported\") ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "TestApp.zip"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT_PROD}}{{RestAPIs}}/archive",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT_PROD}}{{RestAPIs}}",
+					"path": [
+						"archive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROD Import Global Basic Security Policy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Successful POST request\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([201, 202]);\r",
+							"});\r",
+							"console.log(\"Global Policy imported\") ;\r",
+							"/*  Seems no array features in Postman ??? !!\r",
+							"\r",
+							"// retrieve $.ArchiveResult.Policy.id\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"GlobalBasicSecurityId\", jsonData.ArchiveResult.Policy.id);\r",
+							"console.log(\"Global policy Basic SecurityID : \" + pm.collectionVariables.get(\"GlobalBasicSecurityId\") ) ;\r",
+							"*/"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "",
+							"type": "file",
+							"src": "Basic%20Security.zip"
+						}
+					],
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT_PROD}}{{RestAPIs}}/archive",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT_PROD}}{{RestAPIs}}",
+					"path": [
+						"archive"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROD Search ID of Global Basic Security Policy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// retrieve $.policy.id\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.collectionVariables.set(\"GlobalBasicSecurityId\", jsonData.policy[0].id);\r",
+							"console.log(\"Global policy Basic SecurityID : \" + pm.collectionVariables.get(\"GlobalBasicSecurityId\") ) ;"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"types\": [\r\n        \"policy\"\r\n    ],\r\n    \"scope\": [\r\n        {\r\n            \"attributeName\": \"names.value\",\r\n            \"keyword\": \"Basic Security\"\r\n        },\r\n        {\r\n            \"attributeName\": \"policyScope\",\r\n            \"keyword\": \"GLOBAL\"\r\n        }\r\n    ],\r\n    \"responseFields\": [\r\n        \"id\"\r\n    ],\r\n    \"sortByField\": \"names.value\",\r\n    \"sortOrder\": \"ASC\",\r\n    \"condition\": \"and\",\r\n    \"from\": 0,\r\n    \"size\": 10,\r\n    \"teamFilter\": []\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT_PROD}}{{RestAPIs}}/search",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT_PROD}}{{RestAPIs}}",
+					"path": [
+						"search"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PROD Enable Global Basic Security Policy Copy",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(pm.response.code===400 ? pm.test : pm.test.skip)(\"Global Basic Security Policy already enabled\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"already\");\r",
+							"});\r",
+							"(pm.response.code!==400 ? pm.test : pm.test.skip)(\"Global Basic Security Policy enabled\", function () {\r",
+							"   pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://{{HOST}}:{{PORT_PROD}}{{RestAPIs}}/policies/{{GlobalBasicSecurityId}}/activate",
+					"protocol": "http",
+					"host": [
+						"{{HOST}}"
+					],
+					"port": "{{PORT_PROD}}{{RestAPIs}}",
+					"path": [
+						"policies",
+						"{{GlobalBasicSecurityId}}",
+						"activate"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{Password}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{User}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "stageId",
+			"value": ""
+		},
+		{
+			"key": "GlobalBasicSecurityId",
+			"value": ""
+		}
+	]
+}
