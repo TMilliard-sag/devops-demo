@@ -8,6 +8,9 @@ services:
         context: ./dockerfiles
         dockerfile: dockerfile-newman.yaml
     hostname: newman
+# extra definition to access other containers by ports, whatever names    
+    extra_hosts:
+      - "host.docker.internal:host-gateway"    
 #adding restart for successfull deployment
     restart: "on-failure"
     command: 
