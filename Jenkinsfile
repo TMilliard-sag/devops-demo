@@ -96,12 +96,6 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 
 		jsn = readJSON file: '', text: "${response.content}"
 
-		//
-		println("DEBUG Publication for "+portalName +" stages details are :" + jsn )
-
-		//def url = jsn.stages[0].url;
-		//def name = jsn.stages[0].name;
-
 		// publish from API Gateway indicated by staging (NOT main!)
 		url = jsn.stage.url;
 		auth = jsn.stage.name;
@@ -111,15 +105,9 @@ def publishAPI(apigwUrl, stage, id, portalName, communityName) {
 		url = apigwUrl;
 		auth = "wm-apigateway"
 	}
-		//
-		println("DEBUG Publication for "+portalName +" stages details are URL" + url + " and auth " + auth )
 
 	portalId = getPortalId(url, auth,  portalName)
-		//
-		println("DEBUG Publication for "+portalName +" , got portalId : " + portalId )
 	communityId = getPortalCommunityId(url, auth, portalId, communityName)
-		//
-		println("DEBUG Publication for "+portalName +" , got communityId" )
 
 	def body = """ {
 		"portalGatewayId": "${portalId}",
