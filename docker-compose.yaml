@@ -14,7 +14,7 @@ services:
 #adding restart for successfull deployment
     restart: "on-failure"
     command: 
-        run "InitDevopsDemo.postman_collection.json"  --environment="DevopsDemo.postman_environment.json"
+        run "InitDevopsDemov3.postman_collection.json"  --environment="DevopsDemo.postman_environment.json"
     depends_on: 
         - "wm-api-gateway"
   wm-api-micro:
@@ -77,7 +77,7 @@ services:
         - "9072:9072"
         - "9240:9240"
   jenkins:
-    image: tmilliard/wm-devops-demo:jenkins-4
+    image: tmilliard/wm-devops-demo:jenkins-5
     hostname: jenkins
     ports: 
         - "8080:8080"
